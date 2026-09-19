@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analysis History — ResumeAI</title>
+  <meta name="description" content="View all past resume analyses with scores, roles, and timestamps." />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗂️</text></svg>" />
+</head>
+<body>
+
+<!-- ── Navbar ────────────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="navbar-brand">
+      <div class="logo-icon">📄</div>
+      <span class="brand-name">Resume<span>AI</span></span>
+    </a>
+    <div class="navbar-links">
+      <a href="/" class="nav-link">Analyze</a>
+      <a href="/history" class="nav-link active">History</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── History Section ────────────────────────────────────── -->
+<section class="history-section">
+  <div class="container">
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:32px;">
+      <div>
+        <h1 style="font-family:'Space Grotesk',sans-serif; font-size:1.8rem; font-weight:800; letter-spacing:-0.02em;">
+          Analysis History
+        </h1>
+        <p style="color:var(--text-secondary); font-size:.9rem; margin-top:4px;">
+          {{ resumes | length }} resume{{ 's' if resumes | length != 1 }} analyzed so far
+        </p>
+      </div>
+      <a href="/" style="
+        background: var(--gradient-purple);
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: var(--radius-md);
+        font-size: .875rem;
+        font-weight: 600;
+        box-shadow: 0 4px 16px rgba(108,99,255,0.35);
+      ">+ New Analysis</a>
+    </div>
+
+    {% if resumes %}
+    <div class="table-card">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Filename</th>
+            <th>Target Role</th>
+            <th>Resume Score</th>
+            <th>ATS Score</th>
+            <th>Analyzed At</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in resumes %}
+          <tr>
+            <td style="color:var(--text-muted);">{{ r.id }}</td>
+            <td>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span>📄</span>
+                <span style="font-weight:500; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ r.filename }}</span>
+              </div>
+            </td>
+            <td>
+              <span style="background: rgba(108,99,255,0.1); border:1px solid rgba(108,99,255,0.2); color:var(--accent-secondary); padding:4px 10px; border-radius:100px; font-size:.78rem; font-weight:600;">
+                {{ r.target_role }}
+              </span>
+            </td>
+            <td>
+              {% set rs = r.resume_score | round | int %}
+              <span class="score-pill {% if rs >= 80 %}badge-found{% elif rs >= 50 %}' style='background:rgba(251,191,36,0.1);color:var(--accent-yellow);'{% else %}badge-missing{% endif %}"
+                style="{% if rs >= 80 %}background:rgba(52,211,153,0.1);color:var(--accent-green);{% elif rs >= 50 %}background:rgba(251,191,36,0.1);color:var(--accent-yellow);{% else %}background:rgba(248,113,113,0.1);color:var(--accent-red);{% endif %}">
+                {{ rs }}/100
+              </span>
+            </td>
+            <td>
+              {% set as_ = r.ats_score | round | int %}
+              <span class="score-pill"
+                style="{% if as_ >= 80 %}background:rgba(52,211,153,0.1);color:var(--accent-green);{% elif as_ >= 50 %}background:rgba(251,191,36,0.1);color:var(--accent-yellow);{% else %}background:rgba(248,113,113,0.1);color:var(--accent-red);{% endif %}">
+                {{ as_ }}%
+              </span>
+            </td>
+            <td style="color:var(--text-secondary); font-size:.82rem;">{{ r.created_at }}</td>
+            <td>
+              <a href="/dashboard/{{ r.id }}" class="view-btn">View →</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">🗂️</div>
+      <div class="empty-title">No Analyses Yet</div>
+      <div class="empty-sub">Upload your first resume to see the results here.</div>
+      <a href="/" style="
+        display:inline-block;
+        background: var(--gradient-purple);
+        color: white;
+        text-decoration: none;
+        padding: 12px 24px;
+        border-radius: var(--radius-md);
+        font-size: .9rem;
+        font-weight: 600;
+        box-shadow: 0 4px 16px rgba(108,99,255,0.35);
+      ">Analyze Your First Resume →</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<footer class="footer">
+  Built with Python Flask · spaCy NLP · SQLite · Vanilla JS
+</footer>
+
+</body>
+</html>

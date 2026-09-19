@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Resume Analyzer — AI-Powered ATS & Scoring Tool</title>
+  <meta name="description" content="Upload your resume and get an instant AI-powered ATS compatibility score, keyword analysis, and actionable improvement suggestions." />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>" />
+</head>
+<body>
+
+<!-- ── Navbar ────────────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="navbar-brand">
+      <div class="logo-icon">📄</div>
+      <span class="brand-name">Resume<span>AI</span></span>
+    </a>
+    <div class="navbar-links">
+      <a href="/" class="nav-link active">Analyze</a>
+      <a href="/history" class="nav-link">History</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero ──────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge"><span class="dot"></span>AI-Powered Resume Intelligence</div>
+    <h1 class="hero-title">
+      Optimize Your Resume for<br />
+      <span class="text-gradient">ATS & Real Recruiters</span>
+    </h1>
+    <p class="hero-subtitle">
+      Upload your resume and get an instant score, ATS keyword analysis, 
+      and smart improvement suggestions tailored to your target role.
+    </p>
+
+    <div class="stats-strip">
+      <div class="stat-item">
+        <div class="stat-value">8+</div>
+        <div class="stat-label">Roles Supported</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">100+</div>
+        <div class="stat-label">Keywords Analyzed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">&lt; 3s</div>
+        <div class="stat-label">Analysis Time</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">Free</div>
+        <div class="stat-label">Always</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Upload Section ─────────────────────────────────────── -->
+<section class="upload-section">
+  <div class="container">
+    <form id="uploadForm">
+      <div class="upload-card">
+
+        <!-- Dropzone -->
+        <div class="dropzone" id="dropzone">
+          <input type="file" id="resumeFile" name="resume" accept=".pdf,.docx" />
+          <div class="dropzone-icon">📁</div>
+          <div class="dropzone-title">Drag & Drop your resume here</div>
+          <div class="dropzone-sub">or <span>browse files</span> from your device</div>
+          <div class="file-formats">
+            <span class="format-badge">PDF</span>
+            <span class="format-badge">DOCX</span>
+            <span class="format-badge">Max 10 MB</span>
+          </div>
+        </div>
+
+        <!-- Selected File -->
+        <div class="selected-file" id="selectedFile">
+          <span class="file-icon">📄</span>
+          <div>
+            <div class="file-name" id="fileName">—</div>
+            <div class="file-size" id="fileSize">—</div>
+          </div>
+        </div>
+
+        <!-- Role Selector -->
+        <div class="form-section">
+          <label class="form-label" for="targetRole">Target Job Role</label>
+          <select class="form-select" id="targetRole" name="role">
+            {% for role in roles %}
+            <option value="{{ role }}">{{ role }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Analyze Button -->
+        <button type="submit" class="btn-analyze" id="analyzeBtn" disabled>
+          <span class="btn-text"><span>🚀</span> Analyze Resume</span>
+        </button>
+
+        <!-- Progress -->
+        <div class="analysis-progress" id="analysisProgress">
+          <div class="progress-label">
+            <span style="font-weight:600;font-size:.875rem">Analyzing your resume…</span>
+            <span style="color:var(--accent-primary);font-weight:600" id="progressPct">0%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-steps">
+            <div class="progress-step" id="step1">
+              <div class="step-icon" id="step1-icon">1</div>
+              <span>Parsing document</span>
+            </div>
+            <div class="progress-step" id="step2">
+              <div class="step-icon" id="step2-icon">2</div>
+              <span>Scoring resume structure</span>
+            </div>
+            <div class="progress-step" id="step3">
+              <div class="step-icon" id="step3-icon">3</div>
+              <span>ATS keyword analysis</span>
+            </div>
+            <div class="progress-step" id="step4">
+              <div class="step-icon" id="step4-icon">4</div>
+              <span>Generating smart feedback</span>
+            </div>
+            <div class="progress-step" id="step5">
+              <div class="step-icon" id="step5-icon">5</div>
+              <span>Saving to dashboard</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ── Features ──────────────────────────────────────────── -->
+<section class="features-section">
+  <div class="container">
+    <h2 class="section-title">Everything You Need to <span class="text-gradient">Land the Interview</span></h2>
+    <p class="section-sub">Five integrated modules working together to maximize your resume's impact.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(108,99,255,0.12)">📋</div>
+        <div class="feature-title">Smart Parsing</div>
+        <div class="feature-desc">Extracts text from PDF and DOCX files including tables and multi-column layouts.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(34,211,238,0.1)">🎯</div>
+        <div class="feature-title">Resume Scoring</div>
+        <div class="feature-desc">Evaluates 7 resume sections with weighted scoring out of 100 using NLP analysis.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(52,211,153,0.1)">🤖</div>
+        <div class="feature-title">ATS Compatibility</div>
+        <div class="feature-desc">Checks your resume against industry-specific keyword databases for 8+ job roles.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(251,191,36,0.1)">💡</div>
+        <div class="feature-title">Smart Feedback</div>
+        <div class="feature-desc">Prioritized, actionable suggestions to improve structure, keywords, and formatting.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(248,113,113,0.1)">📊</div>
+        <div class="feature-title">Visual Dashboard</div>
+        <div class="feature-desc">Animated score rings, keyword chips, section badges, and breakdown charts.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(167,139,250,0.1)">🗂️</div>
+        <div class="feature-title">Analysis History</div>
+        <div class="feature-desc">Track all past analyses with scores, roles, and timestamps in one place.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────── -->
+<footer class="footer">
+  Built with Python Flask · spaCy NLP · SQLite · Vanilla JS
+</footer>
+
+<!-- ── Toast ──────────────────────────────────────────────── -->
+<div class="toast" id="toast"></div>
+
+<script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+</body>
+</html>

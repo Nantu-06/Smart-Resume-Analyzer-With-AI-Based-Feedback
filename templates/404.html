@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Not Found · ResumeAI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="navbar-brand">
+      <div class="logo-icon">📄</div>
+      <span class="brand-name">Resume<span>AI</span></span>
+    </a>
+  </div>
+</nav>
+<div class="container" style="padding-top:120px;">
+  <div class="empty-state">
+    <div class="empty-icon">🔍</div>
+    <div class="empty-title">Record Not Found</div>
+    <div class="empty-sub">This analysis record doesn't exist or may have been deleted.</div>
+    <a href="/" style="
+      display:inline-block;
+      background: var(--gradient-purple);
+      color: white;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-size: .9rem;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(108,99,255,0.35);
+      margin-top: 8px;
+    ">← Back to Analyzer</a>
+  </div>
+</div>
+</body>
+</html>
